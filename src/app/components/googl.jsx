@@ -6,44 +6,55 @@ class Googl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      "error":true,
-      "api-key": '',
-      "api-url": ''
+      key: '',
+      url: '',
+      errors: []
     };
+  }
+
+  componentDidUpdate() {
+    console.log(this.state);
   }
 
   render() {
     return (
       <div className="googl">
-        <form action="" type="post">
-          <label htmlFor="googl-api-key">API Key:</label>
-          <input type="text" name="api-key" value={this.state.apiKey} onChange={this.handleInputApi}/>
-          <label htmlFor="googl-api-key">URL to shorten:</label>
-          <input type="text" name="api-url" value={this.state.URL}  onChange={this.handleInputApi}/>
-          <button className="google-add" onClick={this.handleSubmit}>Create Goo.gl links</button>
-        </form>
+          <div className="errors">
+              {
+                this.state.errors.map((error,i) => {
+                  return (<span key={i}>The {error} is wrong.</span>);
+                })
+              }
+          </div>
+          <label htmlFor="key">API Key:</label>
+          <input type="text" name="key"
+            onChange={this.handleInputKey.bind(this)}/>
+          <label htmlFor="url">URL to shorten:</label>
+          <input type="text" name="url"
+            onChange={this.handleInputURL.bind(this)}/>
+          <button className="google-add" onClick={this.handleSubmit.bind(this)}>Create Goo.gl links</button>
       </div>
     );
   }
 
   handleSubmit(e) {
+    let errors = [];
 
+    if (isEmpty(this.state.key)) errors.push('API key')
+    if (isEmpty(this.state.url) && ! isURL(this.state.url)) errors.push('URL')
+    
+    if(errors.length > 0) {
+      this.setState({ errors:errors });
+      return;
+    }
   }
 
-  handleInputApi(e) {
-    let value = e.target.value;
-
-    if ( ! isEmpty(value)) {
-      this.setState({ error:false, "api-key":value });
-    }
+  handleInputKey(e) {
+    this.setState({ key:e.target.value });
   }
 
   handleInputURL(e) {
-    let value = e.target.value;
-
-    if ( ! isEmpty(value) || isURL(value)) {
-      this.setState({ error:false, "api-key":value });
-    }
+    this.setState({ url:e.target.value });
   }
   
 }

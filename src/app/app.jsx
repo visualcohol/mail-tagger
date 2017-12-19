@@ -35,13 +35,17 @@ class App extends Component {
           {/* <button className="sample-load" onClick={this.loadSample.bind(this)}>Load sample data</button>  */}
           
         </div>
-        <h2>Inputs:</h2>
+        <h2>Input</h2>
+        
         <div className="input">
+          <h3>Data:</h3>
           <DataInput sampleData={this.state.sample.data} setDatas={this.setDatas.bind(this)} />
+          <h3>Mail Text:</h3>
           <MailInput sampleMail={this.state.sample.mail} setMail={this.setMail.bind(this)} />
+          <h3>Goo.gl:</h3>
           <Googl />
         </div>
-        <h2>Outputs:</h2>
+        <h2>Output:</h2>
         <div className="output">
           {this.convertMail().map((mail, index) => {
             return <MailOutput key={index} value={mail} />
