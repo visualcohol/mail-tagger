@@ -6,7 +6,6 @@ import DataInput from './components/dataInput';
 import MailOutput from './components/mailOutput';
 import Googl from './components/googl';
 
-import 'normalize.css';
 import './assets/scss/app.scss';
 
 class App extends Component {
@@ -14,12 +13,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sample: {
-        data: '',
-        mail: ''
-      },
       datas: [],
-      input: ''
+      inputData: '',
+      inputMail: ''
     }
   }
 
@@ -32,18 +28,19 @@ class App extends Component {
       <div id="app-index">
         <h1>Mail tagger</h1>
         <div className="sample">
-          {/* <button className="sample-load" onClick={this.loadSample.bind(this)}>Load sample data</button>  */}
-          
+          <button className="sample-load" onClick={this.loadSample.bind(this)}>Load sample data</button> 
         </div>
         <h2>Input</h2>
         
         <div className="input">
           <h3>Data:</h3>
-          <DataInput sampleData={this.state.sample.data} setDatas={this.setDatas.bind(this)} />
+          <DataInput inputData={this.state.inputData}
+            setData={this.setData.bind(this)} />
           <h3>Mail Text:</h3>
-          <MailInput sampleMail={this.state.sample.mail} setMail={this.setMail.bind(this)} />
-          <h3>Goo.gl:</h3>
-          <Googl />
+          <MailInput inputMail={this.state.inputMail}
+            setMail={this.setMail.bind(this)} />
+          {/* <h3>Goo.gl:</h3>
+          <Googl /> */}
         </div>
         <h2>Output:</h2>
         <div className="output">
@@ -57,14 +54,16 @@ class App extends Component {
 
   convertMail() {
     let mails = [];
-    if (this.state.input.length < 1) return mails;
+    console.log(this.state.datas);
+    if (this.state.inputMail.length < 1) return mails;
 
     // Iterate datas array
     this.state.datas.forEach((data) => {
       // Iterate data object
-      let replaceMail = this.state.input;
+      let replaceMail = this.state.inputMail;
       Object.keys(data).forEach((key) => {
-        replaceMail = replaceMail.replace('{{' + key + '}}', data[key]);
+        let search = '{{' + key + '}}';
+        replaceMail = replaceMail.replace(new RegExp(search, 'g'), data[key]);
       });
       mails.push(replaceMail)
     });
@@ -73,22 +72,46 @@ class App extends Component {
   }
 
   loadSample(e) {
+    let data = 'firstname\tlastname\temail\r\nClark\tKent\tnothingspecial@dailyplanet.com';
+    let mail = 'Dear {{firstname}}!\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\nMailed to:\r\n{{firstname}} {{lastname}}\r\n{{email}}';
     this.setState({
-      sample: {
-        data: 'fistname\tlastname\temail\r\nClark\tKent\tnothingspecial@dailyplanet.com',
-        mail: 'Dear {{firstname}}!\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\nMailed to:\r\n{{fistname}}{{lastname}}\r\n{{email}}'
-      }
+      inputData: data,
+      inputMail: mail,
+      datas: this.parseData(data)
     });
   }
 
-  setDatas(datas) {
-    this.setState({ datas: datas });
+  setData(data) {
+    let datas = this.parseData(data)
+    this.setState({ datas: datas, inputData: data });
   }
 
-  setMail(e) {
-    this.setState({ input: e.target.value });
+  setMail(mail) {
+    this.setState({ inputMail: mail });
   }
-  
+
+  parseData(data) {
+    let lines,keys,datas;
+    lines = data.split(/\r?\n/);
+
+    // First line will be the data object keys
+    keys  = lines[0].split(/\t/);
+    datas = [];
+
+    // Removing the first line
+    lines.shift();
+
+    // Parsing the rest of the lines for data
+    lines.forEach((line) => {
+      let valueObj = {};
+      line.split(/\t/).forEach((value,i) => {
+        valueObj[keys[i]] = value;
+      });
+      datas.push(valueObj);
+    });
+
+    return datas;
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
