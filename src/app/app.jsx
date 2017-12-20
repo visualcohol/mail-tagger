@@ -72,8 +72,12 @@ class App extends Component {
   }
 
   loadSample(e) {
-    let data = 'firstname\tlastname\temail\r\nClark\tKent\tnothingspecial@dailyplanet.com';
-    let mail = 'Dear {{firstname}}!\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\nMailed to:\r\n{{firstname}} {{lastname}}\r\n{{email}}';
+    let data = 'firstname\tlastname\temail\r\n'+
+               'Clark\tKent\tnothingspecial@dailyplanet.com\r\n'+
+               'Peter\tParker\thavenouncle@webmail.com';
+    let mail = 'Dear {{firstname}}!\r\n\r\n'+
+               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\n'+
+               'Mailed to:\r\n{{firstname}} {{lastname}}\r\n{{email}}';
     this.setState({
       inputData: data,
       inputMail: mail,
