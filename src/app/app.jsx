@@ -39,10 +39,20 @@ class App extends Component {
           <h3>Mail Text:</h3>
           <MailInput inputMail={this.state.inputMail}
             setMail={this.setMail.bind(this)} />
-          {/* <h3>Goo.gl:</h3>
-          <Googl /> */}
+          <h3>Analytics:</h3>
+          <div className="analytics">
+            <div className="inputs">
+              <input type="text"/>
+              <input type="text"/>
+              <input type="text"/>
+              <input type="text"/>
+            </div>
+            <button>Tag URLs</button>
+          </div>
+          <h3>Goo.gl:</h3>
+          <Googl />
         </div>
-        <h2>Output:</h2>
+        <h2>Output</h2>
         <div className="output">
           {this.convertMail().map((mail, index) => {
             return <MailOutput key={index} value={mail} />
@@ -72,11 +82,12 @@ class App extends Component {
   }
 
   loadSample(e) {
-    let data = 'firstname\tlastname\temail\r\n'+
-               'Clark\tKent\tnothingspecial@dailyplanet.com\r\n'+
-               'Peter\tParker\thavenouncle@webmail.com';
+    let data = 'id\tfirstname\tlastname\temail\turl\r\n'+
+               '1\tClark\tKent\tnothingspecial@dailyplanet.com\thttp://example.com\r\n'+
+               '2\tPeter\tParker\thavenouncle@webmail.com\thttp://example.com';
     let mail = 'Dear {{firstname}}!\r\n\r\n'+
                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\n'+
+               '{{url}}\r\n\r\n' +
                'Mailed to:\r\n{{firstname}} {{lastname}}\r\n{{email}}';
     this.setState({
       inputData: data,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { isEmpty, isURL } from 'validator';
+import { isEmpty } from 'validator';
 
 class Googl extends Component {
 
@@ -7,7 +7,6 @@ class Googl extends Component {
     super(props);
     this.state = {
       key: '',
-      url: '',
       errors: []
     };
   }
@@ -25,10 +24,7 @@ class Googl extends Component {
           <label htmlFor="key">API Key:</label>
           <input type="text" name="key"
             onChange={this.handleInputKey.bind(this)}/>
-          <label htmlFor="url">URL to shorten:</label>
-          <input type="text" name="url"
-            onChange={this.handleInputURL.bind(this)}/>
-          <button className="google-add" onClick={this.handleSubmit.bind(this)}>Create Goo.gl links</button>
+          <button className="google-add" onClick={this.handleSubmit.bind(this)}>Shorten URLs</button>
       </div>
     );
   }
@@ -37,22 +33,15 @@ class Googl extends Component {
     let errors = [];
 
     if (isEmpty(this.state.key)) errors.push('API key')
-    if (isEmpty(this.state.url) && ! isURL(this.state.url)) errors.push('URL')
     
     if(errors.length > 0) {
       this.setState({ errors:errors });
-      return;
     }
   }
 
   handleInputKey(e) {
     this.setState({ key:e.target.value });
   }
-
-  handleInputURL(e) {
-    this.setState({ url:e.target.value });
-  }
-  
 }
 
 export default Googl;

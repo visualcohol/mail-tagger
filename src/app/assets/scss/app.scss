@@ -31,9 +31,12 @@ button {
   background-color: #7ECBE9;
   color:#2C2C2C;
 }
-.googl {
-  input {
+.analytics {
+  .inputs {
+    display: flex;
   }
+}
+.googl {
   .errors {
     margin: 10px 0;
     span {
