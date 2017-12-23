@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import MailInput from './components/mailInput';
 import DataInput from './components/dataInput';
 import MailOutput from './components/mailOutput';
+import Analytics from './components/analytics';
 import Googl from './components/googl';
 
 import './assets/scss/app.scss';
@@ -15,12 +16,19 @@ class App extends Component {
     this.state = {
       datas: [],
       inputData: '',
-      inputMail: ''
+      inputMail: '',
+      analyticsURL: {
+        utm_source:'',
+        utm_medium:'',
+        utm_campaign:'',
+        utm_content:'',
+        utm_term:''
+      }
     }
   }
 
   componentDidUpdate() {
-    console.log(this.state)
+    console.log(this.state);
   }
 
   render() {
@@ -40,21 +48,13 @@ class App extends Component {
           <MailInput inputMail={this.state.inputMail}
             setMail={this.setMail.bind(this)} />
           <h3>Analytics:</h3>
-          <div className="analytics">
-            <div className="inputs">
-              <input type="text"/>
-              <input type="text"/>
-              <input type="text"/>
-              <input type="text"/>
-            </div>
-            <button>Tag URLs</button>
-          </div>
+          <Analytics setAnalyticsURL={this.setAnalyticsURL.bind(this)}/>
           <h3>Goo.gl:</h3>
           <Googl />
         </div>
         <h2>Output</h2>
         <div className="output">
-          {this.convertMail().map((mail, index) => {
+          {this.renderMail().map((mail, index) => {
             return <MailOutput key={index} value={mail} />
           })}
         </div>
@@ -62,19 +62,40 @@ class App extends Component {
     );
   }
 
-  convertMail() {
+  renderMail() {
     let mails = [];
-    console.log(this.state.datas);
     if (this.state.inputMail.length < 1) return mails;
 
     // Iterate datas array
     this.state.datas.forEach((data) => {
       // Iterate data object
+
       let replaceMail = this.state.inputMail;
+
       Object.keys(data).forEach((key) => {
+        
+        // URL analytics tag
+        if(key === 'url') {
+
+          let countURL = Object.values(this.state.analyticsURL).filter((value) => {
+            return (value.length > 0) ? true : false;
+          });
+
+          console.log(countURL.length);
+
+          replaceMail = replaceMail.replace('{{url}}', data[key] +
+            this.state.analyticsURL.utm_source.length +
+            this.state.analyticsURL.utm_medium +
+            this.state.analyticsURL.utm_campaign + 
+            this.state.analyticsURL.utm_term +
+            this.state.analyticsURL.utm_content
+          );
+        }
+
         let search = '{{' + key + '}}';
         replaceMail = replaceMail.replace(new RegExp(search, 'g'), data[key]);
       });
+
       mails.push(replaceMail)
     });
 
@@ -103,6 +124,14 @@ class App extends Component {
 
   setMail(mail) {
     this.setState({ inputMail: mail });
+  }
+
+  setAnalyticsURL(url) {
+    this.setState({ analyticsURL: url });
+  }
+
+  setStateValue(name, value) {
+    this.setState({ [name]: value });
   }
 
   parseData(data) {

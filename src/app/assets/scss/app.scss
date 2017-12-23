@@ -2,8 +2,6 @@
   box-sizing: border-box;
 }
 
-@import './../../../../node_modules/normalize.css/normalize.css';
-
 html {
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
@@ -34,6 +32,15 @@ button {
 .analytics {
   .inputs {
     display: flex;
+    margin: 0 -5px;
+    .col {
+      width: 20%;
+      padding: 5px;
+    }
+  }
+  label[for="utm_source"]::after {
+    content: "*";
+    color: red;
   }
 }
 .googl {
@@ -43,8 +50,5 @@ button {
       background-color: yellow;
       margin-right: 10px;
     }
-  }
-  button {
-    margin: 10px 0;
   }
 }
