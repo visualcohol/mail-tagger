@@ -68,35 +68,39 @@ class App extends Component {
 
     // Iterate datas array
     this.state.datas.forEach((data) => {
+      
       // Iterate data object
-
-      let replaceMail = this.state.inputMail;
+      let renderedMail = this.state.inputMail;
 
       Object.keys(data).forEach((key) => {
         
-        // URL analytics tag
+        // GA URL analytics tag
         if(key === 'url') {
 
-          let countURL = Object.values(this.state.analyticsURL).filter((value) => {
+          let countGATags = Object.values(this.state.analyticsURL).filter((value) => {
             return (value.length > 0) ? true : false;
           });
 
-          console.log(countURL.length);
+          if(countGATags.length) {
+            let taggedURL = '';
 
-          replaceMail = replaceMail.replace('{{url}}', data[key] +
-            this.state.analyticsURL.utm_source.length +
-            this.state.analyticsURL.utm_medium +
-            this.state.analyticsURL.utm_campaign + 
-            this.state.analyticsURL.utm_term +
-            this.state.analyticsURL.utm_content
-          );
+            taggedURL += (this.state.analyticsURL.utm_source) ? '&utm_source=' + this.state.analyticsURL.utm_source : '';
+            taggedURL += (this.state.analyticsURL.utm_medium) ? '&utm_medium=' + this.state.analyticsURL.utm_medium : '';
+            taggedURL += (this.state.analyticsURL.utm_campaign) ? '&utm_campaign=' + this.state.analyticsURL.utm_campaign : '';
+            taggedURL += (this.state.analyticsURL.utm_term) ? '&utm_term=' + this.state.analyticsURL.utm_term : '';
+            taggedURL += (this.state.analyticsURL.utm_content) ? '&utm_content=' + this.state.analyticsURL.utm_content : '&utm_content=' + data.id;
+            taggedURL = taggedURL.replace('&', '?');
+            
+            renderedMail = renderedMail.replace('{{url}}', data.url + taggedURL);
+          }
+
         }
 
         let search = '{{' + key + '}}';
-        replaceMail = replaceMail.replace(new RegExp(search, 'g'), data[key]);
+        renderedMail = renderedMail.replace(new RegExp(search, 'g'), data[key]);
       });
 
-      mails.push(replaceMail)
+      mails.push(renderedMail)
     });
 
     return mails;
