@@ -15,8 +15,8 @@ class MailInput extends PureComponent {
   }
 
   handleMail(e) {
-    let mail = e.target.value
-    this.props.setMail(mail);
+    let mail = e.target.value;
+    this.props.setStateValue({inputMail: mail});
   }
   
 }

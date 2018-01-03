@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import MailInput from './components/mailInput';
+import LoadSample from './components/loadSample';
 import DataInput from './components/dataInput';
 import MailOutput from './components/mailOutput';
 import Analytics from './components/analytics';
@@ -28,7 +29,13 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.state);
+    // console.log('did', this.state);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log('next', nextState);
+    nextState.dataasd = 'asd';
+    return true;
   }
 
   render() {
@@ -36,19 +43,20 @@ class App extends Component {
       <div id="app-index">
         <h1>Mail tagger</h1>
         <div className="sample">
-          <button className="sample-load" onClick={this.loadSample.bind(this)}>Load sample data</button> 
+          {/* <button className="sample-load" onClick={this.loadSample.bind(this)}>Load sample data</button> */}
+          <LoadSample setStateValue={this.setStateValue.bind(this)}/>
         </div>
         <h2>Input</h2>
         
         <div className="input">
           <h3>Data:</h3>
           <DataInput inputData={this.state.inputData}
-            setData={this.setData.bind(this)} />
+            setStateValue={this.setStateValue.bind(this)} />
           <h3>Mail Text:</h3>
           <MailInput inputMail={this.state.inputMail}
-            setMail={this.setMail.bind(this)} />
+            setStateValue={this.setStateValue.bind(this)} />
           <h3>Analytics:</h3>
-          <Analytics setAnalyticsURL={this.setAnalyticsURL.bind(this)}/>
+          <Analytics setStateValue={this.setStateValue.bind(this)}/>
           <h3>Goo.gl:</h3>
           <Googl />
         </div>
@@ -121,22 +129,13 @@ class App extends Component {
     });
   }
 
-  setData(data) {
-    let datas = this.parseData(data)
-    this.setState({ datas: datas, inputData: data });
+  setStateValue(value) {
+    this.setState(value);
   }
 
-  setMail(mail) {
-    this.setState({ inputMail: mail });
-  }
-
-  setAnalyticsURL(url) {
-    this.setState({ analyticsURL: url });
-  }
-
-  setStateValue(name, value) {
-    this.setState({ [name]: value });
-  }
+  // setStateValue(name, value) {
+  //   this.setState({ [name]: value });
+  // }
 
   parseData(data) {
     let lines,keys,datas;

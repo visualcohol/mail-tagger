@@ -50,7 +50,7 @@ class Analytics extends PureComponent {
 
   handleInput(e) {
     this.setState({ [e.target.name]:e.target.value }, () => {
-      this.props.setAnalyticsURL(this.buildURL());
+      this.props.setStateValue({analyticsURL: this.buildURL()});
     });
   }
 
