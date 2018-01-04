@@ -52,7 +52,7 @@ class App extends Component {
           <h3>Analytics:</h3>
           <Analytics setStateValue={this.setStateValue.bind(this)}/>
           <h3>Goo.gl:</h3>
-          <Googl getStateValue={this.getStateValue.bind(this)}/>
+          <Googl getStateValue={this.getStateValue.bind(this)} setStateValue={this.setStateValue.bind(this)}/>
         </div>
         <h2>Output</h2>
         <div className="output">

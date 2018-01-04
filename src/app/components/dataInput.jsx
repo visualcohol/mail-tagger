@@ -11,10 +11,6 @@ class DataInput extends PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    // console.log('upd');
-  }
-
   render() {
     return (
       <div className="input-data">
