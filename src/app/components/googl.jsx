@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { isEmpty } from 'validator';
+import Axios from 'axios';
 
 class Googl extends Component {
 
@@ -11,13 +12,17 @@ class Googl extends Component {
     };
   }
 
+  componentDidMount() {
+    
+  }
+
   render() {
     return (
       <div className="googl">
           <div className="errors">
               {
                 this.state.errors.map((error,i) => {
-                  return (<span key={i}>The {error} is wrong.</span>);
+                  return (<span key={i}>{error}</span>);
                 })
               }
           </div>
@@ -32,14 +37,25 @@ class Googl extends Component {
   handleSubmit(e) {
     let errors = [];
 
-    if (isEmpty(this.state.key)) errors.push('API key');
+    if (isEmpty(this.state.key)) errors.push('API key cant be empty');
     
     if(errors.length > 0) {
       this.setState({ errors:errors });
     } else {
       this.setState({ errors:[] });
+      
+      let datas = this.props.getStateValue('datas');
+      if (datas.length) {
+        let datasNew = [];
+        datas.forEach((data) => {
+          data.gurl = 'asdasd';
+          console.log(data);
+        });
+      }
     }
   }
+
+
 
   handleInputKey(e) {
     this.setState({ key:e.target.value });
