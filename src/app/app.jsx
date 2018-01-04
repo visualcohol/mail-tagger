@@ -32,12 +32,6 @@ class App extends Component {
     // console.log('did', this.state);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // console.log('next', nextState);
-    nextState.dataasd = 'asd';
-    return true;
-  }
-
   render() {
     return (
       <div id="app-index">
@@ -58,7 +52,7 @@ class App extends Component {
           <h3>Analytics:</h3>
           <Analytics setStateValue={this.setStateValue.bind(this)}/>
           <h3>Goo.gl:</h3>
-          <Googl />
+          <Googl getStateValue={this.getStateValue.bind(this)}/>
         </div>
         <h2>Output</h2>
         <div className="output">
@@ -114,50 +108,12 @@ class App extends Component {
     return mails;
   }
 
-  loadSample(e) {
-    let data = 'id\tfirstname\tlastname\temail\turl\r\n'+
-               '1\tClark\tKent\tnothingspecial@dailyplanet.com\thttp://example.com\r\n'+
-               '2\tPeter\tParker\thavenouncle@webmail.com\thttp://example.com';
-    let mail = 'Dear {{firstname}}!\r\n\r\n'+
-               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sapien nibh, tempor at ullamcorper sed, eleifend eget odio. Etiam in bibendum ipsum. Proin feugiat vitae leo quis sagittis. Maecenas id iaculis neque.\r\n\r\n'+
-               '{{url}}\r\n\r\n' +
-               'Mailed to:\r\n{{firstname}} {{lastname}}\r\n{{email}}';
-    this.setState({
-      inputData: data,
-      inputMail: mail,
-      datas: this.parseData(data)
-    });
-  }
-
   setStateValue(value) {
     this.setState(value);
   }
 
-  // setStateValue(name, value) {
-  //   this.setState({ [name]: value });
-  // }
-
-  parseData(data) {
-    let lines,keys,datas;
-    lines = data.split(/\r?\n/);
-
-    // First line will be the data object keys
-    keys  = lines[0].split(/\t/);
-    datas = [];
-
-    // Removing the first line
-    lines.shift();
-
-    // Parsing the rest of the lines for data
-    lines.forEach((line) => {
-      let valueObj = {};
-      line.split(/\t/).forEach((value,i) => {
-        valueObj[keys[i]] = value;
-      });
-      datas.push(valueObj);
-    });
-
-    return datas;
+  getStateValue(value) {
+    return this.state[value] || undefined;
   }
 }
 

@@ -12,7 +12,7 @@ class DataInput extends PureComponent {
   }
 
   componentDidUpdate() {
-    console.log('upd');
+    // console.log('upd');
   }
 
   render() {
