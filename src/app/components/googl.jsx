@@ -32,10 +32,12 @@ class Googl extends Component {
   handleSubmit(e) {
     let errors = [];
 
-    if (isEmpty(this.state.key)) errors.push('API key')
+    if (isEmpty(this.state.key)) errors.push('API key');
     
     if(errors.length > 0) {
       this.setState({ errors:errors });
+    } else {
+      this.setState({ errors:[] });
     }
   }
 
