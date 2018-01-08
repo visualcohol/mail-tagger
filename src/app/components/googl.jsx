@@ -47,13 +47,34 @@ class Googl extends Component {
 
         datas.forEach((data) => {
           if(data.url && ! isEmpty(data.url) && isURL(data.url)) {
-            // axios.get('/user?ID=12345')
-            // .then(function (response) {
-            //   console.log(response);
-            // })
-            // .catch(function (error) {
-            //   console.log(error);
-            // });
+            Axios.get('https://www.googleapis.com/urlshortener/v1/url',
+            {
+              params: {
+                shortUrl: 'http://goo.gl/fbsS',
+                key: 'key='
+              }
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
+            });
             data.googl = 'https://goo.gl/23424';
           } else {
             data.googl = '';
