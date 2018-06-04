@@ -6,7 +6,6 @@ import LoadSample from './components/loadSample';
 import DataInput from './components/dataInput';
 import MailOutput from './components/mailOutput';
 import Analytics from './components/analytics';
-import Googl from './components/googl';
 
 import './assets/scss/app.scss';
 
@@ -51,8 +50,6 @@ class App extends Component {
             setStateValue={this.setStateValue.bind(this)} />
           <h3>Analytics:</h3>
           <Analytics setStateValue={this.setStateValue.bind(this)}/>
-          <h3>Goo.gl:</h3>
-          <Googl getStateValue={this.getStateValue.bind(this)} setStateValue={this.setStateValue.bind(this)}/>
         </div>
         <h2>Output</h2>
         <div className="output">
